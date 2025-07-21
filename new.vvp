@@ -1,0 +1,144 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision - 3;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_01378CD0 .scope module, "tb_12_hr_clock" "tb_12_hr_clock" 2 4;
+ .timescale 0 -3;
+v0137EC58_0 .var "clk", 0 0;
+v0137ECB0_0 .var "en", 0 0;
+v0137ED08_0 .net "hour", 3 0, v01373238_0; 1 drivers
+v0137ED60_0 .net "min", 5 0, v011C2088_0; 1 drivers
+v0137EDB8_0 .net "pm", 0 0, v011C20E0_0; 1 drivers
+v0137EE10_0 .var "rst", 0 0;
+v0137EE68_0 .net "sec", 5 0, v0137EC00_0; 1 drivers
+S_01378DE0 .scope module, "uut" "twelve_hr_clock" 2 15, 3 1, S_01378CD0;
+ .timescale 0 0;
+v01373188_0 .net "clk", 0 0, v0137EC58_0; 1 drivers
+v013731E0_0 .net "en", 0 0, v0137ECB0_0; 1 drivers
+v01373238_0 .var "hour", 3 0;
+v011C2088_0 .var "min", 5 0;
+v011C20E0_0 .var "pm", 0 0;
+v011C2138_0 .net "rst", 0 0, v0137EE10_0; 1 drivers
+v0137EC00_0 .var "sec", 5 0;
+E_0137E688 .event posedge, v01373188_0;
+    .scope S_01378DE0;
+T_0 ;
+    %wait E_0137E688;
+    %load/v 8, v011C2138_0, 1;
+    %jmp/0xz  T_0.0, 8;
+    %movi 8, 12, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v01373238_0, 0, 8;
+    %ix/load 0, 6, 0;
+    %assign/v0 v011C2088_0, 0, 0;
+    %ix/load 0, 6, 0;
+    %assign/v0 v0137EC00_0, 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v011C20E0_0, 0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v013731E0_0, 1;
+    %jmp/0xz  T_0.2, 8;
+    %load/v 8, v0137EC00_0, 6;
+    %cmpi/u 8, 59, 6;
+    %jmp/0xz  T_0.4, 4;
+    %ix/load 0, 6, 0;
+    %assign/v0 v0137EC00_0, 0, 0;
+    %load/v 8, v011C2088_0, 6;
+    %cmpi/u 8, 59, 6;
+    %jmp/0xz  T_0.6, 4;
+    %ix/load 0, 6, 0;
+    %assign/v0 v011C2088_0, 0, 0;
+    %load/v 8, v01373238_0, 4;
+    %cmpi/u 8, 12, 4;
+    %jmp/0xz  T_0.8, 4;
+    %movi 8, 1, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v01373238_0, 0, 8;
+    %load/v 8, v011C20E0_0, 1;
+    %inv 8, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v011C20E0_0, 0, 8;
+    %jmp T_0.9;
+T_0.8 ;
+    %ix/load 0, 1, 0;
+    %load/vp0 8, v01373238_0, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v01373238_0, 0, 8;
+T_0.9 ;
+    %jmp T_0.7;
+T_0.6 ;
+    %ix/load 0, 1, 0;
+    %load/vp0 8, v011C2088_0, 6;
+    %ix/load 0, 6, 0;
+    %assign/v0 v011C2088_0, 0, 8;
+T_0.7 ;
+    %jmp T_0.5;
+T_0.4 ;
+    %ix/load 0, 1, 0;
+    %load/vp0 8, v0137EC00_0, 6;
+    %ix/load 0, 6, 0;
+    %assign/v0 v0137EC00_0, 0, 8;
+T_0.5 ;
+T_0.2 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_01378CD0;
+T_1 ;
+    %set/v v0137EC58_0, 0, 1;
+    %end;
+    .thread T_1;
+    .scope S_01378CD0;
+T_2 ;
+    %delay 500, 0;
+    %load/v 8, v0137EC58_0, 1;
+    %inv 8, 1;
+    %set/v v0137EC58_0, 8, 1;
+    %jmp T_2;
+    .thread T_2;
+    .scope S_01378CD0;
+T_3 ;
+    %vpi_call 2 30 "$display", "Time\011Hour\011Min\011Sec\011PM";
+    %set/v v0137EE10_0, 1, 1;
+    %set/v v0137ECB0_0, 0, 1;
+    %delay 2000, 0;
+    %set/v v0137EE10_0, 0, 1;
+    %set/v v0137ECB0_0, 1, 1;
+    %movi 8, 125, 8;
+T_3.0 %cmp/s 0, 8, 8;
+    %jmp/0xz T_3.1, 5;
+    %add 8, 1, 8;
+    %delay 1000, 0;
+    %vpi_call 2 40 "$display", "%0t\011%0d\011%0d\011%0d\011%b", $time, v0137ED08_0, v0137ED60_0, v0137EE68_0, v0137EDB8_0;
+    %jmp T_3.0;
+T_3.1 ;
+    %set/v v0137EE10_0, 1, 1;
+    %delay 2000, 0;
+    %set/v v0137EE10_0, 0, 1;
+    %delay 2000, 0;
+    %load/v 8, v0137EDB8_0, 1;
+    %jmp/0  T_3.2, 8;
+    %movi 9, 20557, 16;
+    %jmp/1  T_3.4, 8;
+T_3.2 ; End of true expr.
+    %movi 25, 16717, 16;
+    %jmp/0  T_3.3, 8;
+ ; End of false expr.
+    %blend  9, 25, 16; Condition unknown.
+    %jmp  T_3.4;
+T_3.3 ;
+    %mov 9, 25, 16; Return false value
+T_3.4 ;
+    %vpi_call 2 48 "$display", "After reset: %0d:%0d:%0d %s", v0137ED08_0, v0137ED60_0, v0137EE68_0, T<9,16,u>;
+    %vpi_call 2 50 "$finish";
+    %end;
+    .thread T_3;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "tb_12_hr_clock.v";
+    "./12_hr_clock.v";
