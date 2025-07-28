@@ -16,7 +16,7 @@ module top_module(
               s8=10'b0100000000,
               s9=10'b1000000000;
 
-    always@(in,state,next_state)
+    always@(*)
      
         case(state)
             s0:
