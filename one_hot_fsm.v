@@ -1,9 +1,14 @@
 module top_module(
     input in,
-    input [9:0] state,
-    output reg [9:0] next_state,
+    output  reg [9:0] state,
+    input clk,
+    input rst,
     output reg out1,
     output reg out2);
+    
+   
+
+    
     
     parameter s0=10'b0000000001,
               s1=10'b0000000010,             
@@ -16,7 +21,19 @@ module top_module(
               s8=10'b0100000000,
               s9=10'b1000000000;
 
+    reg [9:0] next_state;
+    
+    always @(posedge clk or posedge rst) 
+    begin
+    if (rst)
+        state <= s0;
+    else
+        state <= next_state;
+    end
+
     always@(*)
+    begin
+    next_state=s0;
      
         case(state)
             s0:
@@ -85,6 +102,8 @@ module top_module(
                     out1=0;
                     out2=0;
                 end
+     
                 
         endcase
+    end
 endmodule
